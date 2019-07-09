@@ -5,14 +5,16 @@
 # are busy. This seems to work "okay" on a RHEL7 based laptop and
 # only results in the lines disappearing until available again.
 
-for device in `ls /sys/block` ; do 
+CUT_CMD='cut -s -d ":" -f2-'
+
+for device in $(ls /sys/block)	; do 
     smartutil_output=$(mktemp --suffix=$i)
     # Run the actual smartutil command
     smartctl -i --attributes --log=selftest /dev/$device &>$smartutil_output
-
-    serial=$(cat $smartutil_output |grep "Serial Number"|cut -c 37-)
-    capacity=$(cat $smartutil_output |grep "Total" |grep "Capacity" |cut -c 37-|sed 's/\ \[.*$//')
-    utilization=$(cat $smartutil_output |grep "Utilization" | cut -c 37-|sed 's/\ \[.*$//')
+  
+    serial=$(cat $smartutil_output |grep -i "Serial Number"|eval $CUT_CMD)
+    capacity=$(cat $smartutil_output |grep -i "Total" |grep "Capacity" |eval $CUT_CMD|sed 's/\ \[.*$//')
+    utilization=$(cat $smartutil_output |grep -i "Utilization" |eval $CUT_CMD|sed 's/\ \[.*$//')
 
     PREPEND="smartutil"
     LABEL=$(echo "{device=$device serial=$serial}")
@@ -25,7 +27,7 @@ for device in `ls /sys/block` ; do
         # somewhat pointless, however actual utilization may be
         # useful with nvme devices.
         echo $PREPEND\_capacity$LABEL $capacity
-        echo $PREPEND\_utilizaiton$LABEL $utilization
+        echo $PREPEND\_utilization$LABEL $utilization
 
         # Massage the data in a "fairly agnostic" way to try make as much
         # it useful as possible.
