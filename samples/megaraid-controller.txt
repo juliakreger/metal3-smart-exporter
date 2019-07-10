@@ -1,0 +1,17 @@
+smartctl 6.5 2016-05-07 r4318 [x86_64-linux-3.10.0-957.21.3.el7.x86_64] (local build)
+Copyright (C) 2002-16, Bruce Allen, Christian Franke, www.smartmontools.org
+
+=== START OF INFORMATION SECTION ===
+Vendor:               DELL
+Product:              PERC H710
+Revision:             3.13
+User Capacity:        214,748,364,800 bytes [214 GB]
+Logical block size:   512 bytes
+Logical Unit id:      0x6b083fe0d2d0f2001f56bac605829393
+Serial number:        xxx
+Device type:          disk
+Local Time is:        Wed Jul 10 04:16:26 2019 EDT
+SMART support is:     Unavailable - device lacks SMART capability.
+
+=== START OF READ SMART DATA SECTION ===
+Device does not support Self Test logging
