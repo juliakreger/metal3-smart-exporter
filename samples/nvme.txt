@@ -1,0 +1,37 @@
+smartctl 6.5 2016-05-07 r4318 [x86_64-linux-3.10.0-957.21.3.el7.x86_64] (local build)
+Copyright (C) 2002-16, Bruce Allen, Christian Franke, www.smartmontools.org
+
+=== START OF INFORMATION SECTION ===
+Model Number:                       Dell Express Flash NVMe P4600 1.6TB SFF
+Serial Number:                      xxx
+Firmware Version:                   QDV1DP15
+PCI Vendor ID:                      0x8086
+PCI Vendor Subsystem ID:            0x1028
+IEEE OUI Identifier:                0x5cd2e4
+Total NVM Capacity:                 1,600,321,314,816 [1.60 TB]
+Unallocated NVM Capacity:           0
+Controller ID:                      0
+Number of Namespaces:               1
+Namespace 1 Size/Capacity:          1,600,321,314,816 [1.60 TB]
+Namespace 1 Formatted LBA Size:     512
+Local Time is:                      Wed Jul 10 10:18:31 2019 CEST
+
+=== START OF SMART DATA SECTION ===
+SMART/Health Information (NVMe Log 0x02, NSID 0xffffffff)
+Critical Warning:                   0x00
+Temperature:                        27 Celsius
+Available Spare:                    100%
+Available Spare Threshold:          10%
+Percentage Used:                    0%
+Data Units Read:                    7,896,710 [4.04 TB]
+Data Units Written:                 2,063,400 [1.05 TB]
+Host Read Commands:                 58,764,536
+Host Write Commands:                15,612,248
+Controller Busy Time:               8
+Power Cycles:                       193
+Power On Hours:                     2,467
+Unsafe Shutdowns:                   132
+Media and Data Integrity Errors:    0
+Error Information Log Entries:      0
+Warning  Comp. Temperature Time:    0
+Critical Comp. Temperature Time:    0

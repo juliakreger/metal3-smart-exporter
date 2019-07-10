@@ -1,0 +1,52 @@
+smartctl 6.5 2016-05-07 r4318 [x86_64-linux-3.10.0-957.21.3.el7.x86_64] (local build)
+Copyright (C) 2002-16, Bruce Allen, Christian Franke, www.smartmontools.org
+
+=== START OF INFORMATION SECTION ===
+Vendor:               SEAGATE
+Product:              ST600MM0006
+Revision:             LS0A
+Compliance:           SPC-4
+User Capacity:        600,127,266,816 bytes [600 GB]
+Logical block size:   512 bytes
+LU is fully provisioned
+Rotation Rate:        10000 rpm
+Form Factor:          2.5 inches
+Logical Unit id:      0x5000c5007764ff6f
+Serial number:        xxx
+Device type:          disk
+Transport protocol:   SAS (SPL-3)
+Local Time is:        Wed Jul 10 04:16:47 2019 EDT
+SMART support is:     Available - device has SMART capability.
+SMART support is:     Enabled
+Temperature Warning:  Disabled or Not Supported
+
+=== START OF READ SMART DATA SECTION ===
+Current Drive Temperature:     33 C
+Drive Trip Temperature:        50 C
+
+Manufactured in week 33 of year 2014
+Specified cycle count over device lifetime:  10000
+Accumulated start-stop cycles:  310
+Specified load-unload count over device lifetime:  300000
+Accumulated load-unload cycles:  13218
+Elements in grown defect list: 0
+
+Vendor (Seagate) cache information
+  Blocks sent to initiator = 3556778918
+  Blocks received from initiator = 721163403
+  Blocks read from cache and sent to initiator = 16539604
+  Number of read and write commands whose size <= segment size = 32074580
+  Number of read and write commands whose size > segment size = 227
+
+Vendor (Seagate/Hitachi) factory information
+  number of hours powered up = 14340.72
+  number of minutes until next internal SMART test = 31
+
+SMART Self-test log
+Num  Test              Status                 segment  LifeTime  LBA_first_err [SK ASC ASQ]
+     Description                              number   (hours)
+# 1  Background short  Completed                  64       2                 - [-   -    -]
+# 2  Reserved(7)       Completed                  48       2                 - [-   -    -]
+# 3  Background short  Completed                  64       1                 - [-   -    -]
+
+Long (extended) Self Test duration: 3777 seconds [63.0 minutes]

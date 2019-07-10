@@ -1,0 +1,40 @@
+smartctl 6.5 2016-05-07 r4318 [x86_64-linux-3.10.0-957.21.3.el7.x86_64] (local build)
+Copyright (C) 2002-16, Bruce Allen, Christian Franke, www.smartmontools.org
+
+=== START OF INFORMATION SECTION ===
+Vendor:               TOSHIBA
+Product:              AL15SEB120NY
+Revision:             EF03
+Compliance:           SPC-4
+User Capacity:        1,200,243,695,616 bytes [1.20 TB]
+Logical block size:   512 bytes
+Formatted with type 2 protection
+Rotation Rate:        10000 rpm
+Form Factor:          2.5 inches
+Logical Unit id:      0x500003992893efa1
+Serial number:        xxx
+Device type:          disk
+Transport protocol:   SAS (SPL-3)
+Local Time is:        Wed Jul 10 10:18:59 2019 CEST
+SMART support is:     Available - device has SMART capability.
+SMART support is:     Enabled
+Temperature Warning:  Disabled or Not Supported
+
+=== START OF READ SMART DATA SECTION ===
+Current Drive Temperature:     23 C
+Drive Trip Temperature:        65 C
+
+Manufactured in week 05 of year 2019
+Specified cycle count over device lifetime:  50000
+Accumulated start-stop cycles:  210
+Specified load-unload count over device lifetime:  600000
+Accumulated load-unload cycles:  1458
+Elements in grown defect list: 0
+
+SMART Self-test log
+Num  Test              Status                 segment  LifeTime  LBA_first_err [SK ASC ASQ]
+     Description                              number   (hours)
+# 1  Reserved(7)       Completed                  64       4                 - [-   -    -]
+# 2  Background short  Completed                   -       3                 - [-   -    -]
+
+Long (extended) Self Test duration: 6429 seconds [107.2 minutes]
