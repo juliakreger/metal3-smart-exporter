@@ -2,18 +2,28 @@
 
 # Enumerate through all devices, which will pull in other things like
 # Device Mapper. Sometimes devices may not return full smart data if
-# are busy. This seems to work "okay" on a RHEL7 based laptop and
-# only results in the lines disappearing until available again.
+# are busy.
+# Tested on real bare metal with megaraid and nvme devices.
 
-for device in `ls /sys/block` ; do 
-    smartutil_output=$(mktemp --suffix=$i)
-    # Run the actual smartutil command
-    smartctl -i --attributes --log=selftest /dev/$device &>$smartutil_output
+CUT_CMD='cut -s -d ":" -f2-'
+SMART_CMD='smartctl -i --attributes --log=selftest'
 
-    serial=$(cat $smartutil_output |grep "Serial Number"|cut -c 37-)
-    capacity=$(cat $smartutil_output |grep "Total" |grep "Capacity" |cut -c 37-|sed 's/\ \[.*$//')
-    utilization=$(cat $smartutil_output |grep "Utilization" | cut -c 37-|sed 's/\ \[.*$//')
+get_serial () {
+    serial=$(cat $smartutil_output | grep -i "serial" | eval $CUT_CMD | sed "s/^[ \t]*//")
+}
 
+parse_smartutil_output_megaraid () {
+    # (rpittau) TODO: this is very basic, add more stuff
+    get_serial
+}
+
+parse_smartutil_output_nvme () {
+    get_serial
+    capacity=$(cat $smartutil_output | grep -i "total" | grep -i "capacity" | eval $CUT_CMD | sed 's/\ \[.*$//')
+    utilization=$(cat $smartutil_output | grep -i "utilization" | eval $CUT_CMD | sed 's/\ \[.*$//')
+}
+
+format_and_print_output () {
     PREPEND="smartutil"
     LABEL=$(echo "{device=$device serial=$serial}")
 
@@ -25,13 +35,13 @@ for device in `ls /sys/block` ; do
         # somewhat pointless, however actual utilization may be
         # useful with nvme devices.
         echo $PREPEND\_capacity$LABEL $capacity
-        echo $PREPEND\_utilizaiton$LABEL $utilization
+        echo $PREPEND\_utilization$LABEL $utilization
 
         # Massage the data in a "fairly agnostic" way to try make as much
         # it useful as possible.
         cat $smartutil_output|grep -A100 "SMART/Health"|grep ":" |grep -v "units"|sed s/Spare/Spare_Utilization/|sed s/\%//|grep -v "Time"|awk -F '[[:space:]][[:space:]]+' '{print tolower($1) $2}'|sed s/^/$PREPEND\_/ |sed s/\ Celsius// |sed 's/\ \[.*$//' |sed s/\ /_/g |sed "s/\:/$LABEL\ /g" &>$smartutil_output
 
-        # Lets return everything but multiple tempature sensors.
+        # Lets return everything but multiple temperature sensors.
         cat $smartutil_output |grep -v "temperature_"
 
         # Magic to give us tempature sensor data.
@@ -43,6 +53,36 @@ for device in `ls /sys/block` ; do
             count=$((count+1))
         done
     fi
-    # Delete the temporary file.
-    rm $smartutil_output 
+}
+
+for device in $(ls /sys/block) ; do
+    serial=''
+    # (rpittau) TODO: add more parsing functions based on
+    # device type
+
+    # We don't want to run smartctl on cd or dvd
+    if [[ "$device" != *"sr"* ]]; then
+        smartutil_output=$(mktemp --suffix=$i)
+        # Run the actual smartutil command
+        eval $SMART_CMD /dev/$device &>$smartutil_output
+
+        vendor=$(cat $smartutil_output | grep -i "vendor" | eval $CUT_CMD)
+        product=$(cat $smartutil_output | grep -i "product" | eval $CUT_CMD)
+
+        # Check if we have a megaraid device
+        if [[ "$vendor" =~ "DELL" && "$product" =~ "PERC" ]]; then
+            # Rerun smartctl for megaraid and parse the output for each disk in the controller
+            for i in {0..24}; do
+                if eval $SMART_CMD /dev/$device -d megaraid,${i} &>$smartutil_output ; then
+                    parse_smartutil_output_megaraid
+                    format_and_print_output
+                fi
+            done
+        else
+            parse_smartutil_output_nvme
+            format_and_print_output
+        fi
+        # Delete the temporary file.
+        rm $smartutil_output
+    fi
 done
