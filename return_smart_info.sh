@@ -78,7 +78,12 @@ for device in $(ls /sys/block) ; do
                     format_and_print_output
                 fi
             done
-        else
+        # Check to see if it's a nvme device
+        elif [[ "$device" == nvme* ]]; then
+            # to be compatible with smart tools version < 7.x we need
+            # to specify the broadcast namespace
+            # see https://www.smartmontools.org/ticket/1134 for details
+            eval $SMART_CMD /dev/$device -d nvme,0xffffffff &>$smartutil_output
             parse_smartutil_output_nvme
             format_and_print_output
         fi
